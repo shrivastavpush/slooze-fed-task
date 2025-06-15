@@ -289,13 +289,12 @@ export default function Products() {
       </div>
 
       {/* Modal for product add/edit */}
-      {modalOpen && (
-        <ProductModal
-          initial={edit}
-          onClose={() => setModalOpen(false)}
-          onSave={handleSave}
-        />
-      )}
+      <ProductModal
+        isOpen={modalOpen}
+        initial={edit}
+        onClose={() => setModalOpen(false)}
+        onSave={handleSave}
+      />
     </div>
   );
 }
