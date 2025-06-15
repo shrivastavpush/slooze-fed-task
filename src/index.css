@@ -1,0 +1,98 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. */
+
+@layer base {
+  :root {
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 4.9%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 4.9%;
+
+    --primary: 222.2 47.4% 11.2%;
+    --primary-foreground: 210 40% 98%;
+
+    --secondary: 210 40% 96.1%;
+    --secondary-foreground: 222.2 47.4% 11.2%;
+
+    --muted: 210 40% 96.1%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 210 40% 96.1%;
+    --accent-foreground: 222.2 47.4% 11.2%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 214.3 31.8% 91.4%;
+    --input: 214.3 31.8% 91.4%;
+    --ring: 222.2 84% 4.9%;
+
+    --radius: 0.5rem;
+
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 240 5.3% 26.1%;
+    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-primary-foreground: 0 0% 98%;
+    --sidebar-accent: 240 4.8% 95.9%;
+    --sidebar-accent-foreground: 240 5.9% 10%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+
+  /* UPDATED DARK COLORS TO FIX CONTRAST/READABILITY */
+  .dark {
+    --background: 0 0% 10%;             /* Slightly lighter for less pure black (#1a1a1a) */
+    --foreground: 0 0% 98%;             /* Very light text (#fafafa) */
+
+    --card: 0 0% 13%;                   /* #212121 card bg */
+    --card-foreground: 0 0% 98%;
+
+    --popover: 0 0% 13%;                /* #212121 popovers */
+    --popover-foreground: 0 0% 98%;
+
+    --primary: 258 96% 68%;             /* Brighter purple button/linedefault (#b87fff) */
+    --primary-foreground: 0 0% 100%;    /* white */
+
+    --secondary: 240 2.8% 20%;          /* #232323 for subtle secondary bg */
+    --secondary-foreground: 0 0% 98%;
+
+    --muted: 0 0% 17%;                  /* #2b2b2b muted backgrounds */
+    --muted-foreground: 0 0% 72%;       /* #b8b8b8 muted text */
+
+    --accent: 32 100% 56%;              /* A more vibrant orange (#ffb242) */
+    --accent-foreground: 0 0% 10%;      /* Near-black on orange */
+
+    --destructive: 2 90% 60%;           /* Stronger red error */
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 0 0% 23%;                 /* #3a3a3a for subtle dark borders */
+    --input: 0 0% 23%;                  /* Similar to border */
+    --ring: 258 96% 68%;                /* Matches updated primary */
+
+    --sidebar-background: 0 0% 13%;     /* #212121 sidebar bg */
+    --sidebar-foreground: 0 0% 96%;     /* #f5f5f5 sidebar text */
+    --sidebar-primary: 258 96% 68%;     /* Updated purple */
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 0 0% 22%;         /* Slight accent row */
+    --sidebar-accent-foreground: 0 0% 98%;
+    --sidebar-border: 0 0% 23%;
+    --sidebar-ring: 258 96% 68%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+  }
+}

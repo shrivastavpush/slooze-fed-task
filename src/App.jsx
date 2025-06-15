@@ -1,0 +1,85 @@
+import { useEffect } from "react";
+import { Toaster } from "@/components/ui/toaster";
+import { Toaster as Sonner } from "@/components/ui/sonner";
+import { TooltipProvider } from "@/components/ui/tooltip";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+
+import Index from "@/pages/Index";
+import NotFound from "@/pages/NotFound";
+import { AuthProvider, useAuth } from "./hooks/useAuth";
+import { useTheme } from "./hooks/useTheme";
+import Layout from "@/components/Layout";
+import Login from "@/pages/Login";
+import Dashboard from "@/pages/Dashboard";
+import Products from "@/pages/Products";
+
+const queryClient = new QueryClient();
+
+// Component to handle theme initialization
+function ThemeInitializer() {
+  const [theme] = useTheme();
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    root.classList.remove("light", "dark");
+    root.classList.add(theme);
+    root.style.colorScheme = theme;
+  }, [theme]);
+
+  return null;
+}
+
+function ProtectedRoute({ children, role }) {
+  const { user } = useAuth();
+  if (!user) return <Navigate to="/login" replace />;
+  if (role && user.role !== role) return <Navigate to="/products" replace />;
+  return <>{children}</>;
+}
+
+function AppRoutes() {
+  return (
+    <Routes>
+      <Route path="/login" element={<Login />} />
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute role="manager">
+            <Layout>
+              <Dashboard />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route
+        path="/products"
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <Products />
+            </Layout>
+          </ProtectedRoute>
+        }
+      />
+      <Route path="/" element={<Index />} />
+      <Route path="*" element={<NotFound />} />
+    </Routes>
+  );
+}
+
+const App = () => (
+  <QueryClientProvider client={queryClient}>
+    <TooltipProvider>
+      <ThemeInitializer />
+      <Toaster />
+      <Sonner />
+      <AuthProvider>
+        <BrowserRouter>
+          <AppRoutes />
+        </BrowserRouter>
+      </AuthProvider>
+    </TooltipProvider>
+  </QueryClientProvider>
+);
+
+export default App;
