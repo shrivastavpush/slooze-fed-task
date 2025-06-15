@@ -1,7 +1,7 @@
 
 import React from "react";
-import { SidebarProvider, SidebarInset } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/AppSidebar";
+import { SidebarProvider, SidebarInset } from "../components/ui/sidebar";
+import { AppSidebar } from "../components/AppSidebar";
 
 export default function Layout({ children }) {
   return (

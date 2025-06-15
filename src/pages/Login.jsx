@@ -1,11 +1,13 @@
 import React, { useState } from "react";
-import { useAuth } from "@/hooks/useAuth";
 import { useNavigate } from "react-router-dom";
-import { toast } from "@/hooks/use-toast";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
+
+import { useAuth } from "../hooks/useAuth";
+import { toast } from "../hooks/use-toast";
 import { Facebook, Globe } from "lucide-react";
+
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
 
 export default function Login() {
   const { login } = useAuth();

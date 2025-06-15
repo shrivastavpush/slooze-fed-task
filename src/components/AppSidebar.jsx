@@ -1,11 +1,17 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarSeparator, } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarSeparator, } from "./../components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 import { useLocation, Link } from "react-router-dom";
-import { LayoutDashboard, List, PackagePlus, PackageMinus, Users, LogOut, Sun, Moon, } from "lucide-react";
-import { cn } from "@/lib/utils";
+import { LayoutDashboard, List, PackageMinus, Users, LogOut, Sun, Moon, Settings, Home, ChartColumn, Wallet, BadgeInfo } from "lucide-react";
+import { cn } from "./../lib/utils";
 
 const sidebarItems = [
+  {
+    label: "Home",
+    icon: Home,
+    path: "/",
+    alwaysVisible: false,
+  },
   {
     label: "Dashboard",
     icon: LayoutDashboard,
@@ -19,21 +25,27 @@ const sidebarItems = [
     alwaysVisible: true,
   },
   {
-    label: "Stock In",
-    icon: PackagePlus,
-    path: "/stock-in",
+    label: "Analytics",
+    icon: ChartColumn,
+    path: "/analytics",
     alwaysVisible: true,
   },
   {
-    label: "Stock Out",
-    icon: PackageMinus,
-    path: "/stock-out",
+    label: "Finance",
+    icon: Wallet,
+    path: "/finance",
     alwaysVisible: true,
   },
   {
-    label: "Suppliers",
-    icon: Users,
-    path: "/suppliers",
+    label: "Account Settings",
+    icon: Settings,
+    path: "/settings",
+    alwaysVisible: true,
+  },
+  {
+    label: "Help",
+    icon: BadgeInfo,
+    path: "/help",
     alwaysVisible: true,
   },
 ];
@@ -47,7 +59,7 @@ export function AppSidebar() {
     <Sidebar>
       <SidebarContent>
         <SidebarGroup>
-          <SidebarGroupLabel>Home</SidebarGroupLabel>
+          <SidebarGroupLabel className="text-center text-xl mb-2">BitStore</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
               {sidebarItems.map((item) => {

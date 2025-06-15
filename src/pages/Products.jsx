@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { toast } from "@/hooks/use-toast";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell, } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, } from "@/components/ui/pagination";
+import { toast } from "../hooks/use-toast";
+import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell, } from "../components/ui/table";
+import { Button } from "../components/ui/button";
+import { Pagination, PaginationContent, PaginationItem, PaginationLink, } from "../components/ui/pagination";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip as ChartTooltip, Legend } from 'chart.js';
 import { Download, Filter } from "lucide-react";
 import ProductModal from "../components/ProductModal";
