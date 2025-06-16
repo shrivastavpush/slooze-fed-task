@@ -1,8 +1,8 @@
-import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarFooter, SidebarSeparator, } from "./../components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuItem, SidebarMenuButton, SidebarSeparator, } from "./../components/ui/sidebar";
 import { useAuth } from "@/hooks/useAuth";
 import { useTheme } from "@/hooks/useTheme";
 import { useLocation, Link } from "react-router-dom";
-import { LayoutDashboard, List, PackageMinus, Users, LogOut, Sun, Moon, Settings, Home, ChartColumn, Wallet, BadgeInfo } from "lucide-react";
+import { LayoutDashboard, List, LogOut, Sun, Moon, Settings, Home, ChartColumn, Wallet, BadgeInfo } from "lucide-react";
 import { cn } from "./../lib/utils";
 
 const sidebarItems = [
@@ -103,32 +103,30 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="flex flex-col gap-2 mt-auto border-t border-border pt-4">
-        <SidebarSeparator />
-        <div className="flex flex-col gap-3 px-2">
-          <button
-            className="flex items-center gap-2 px-2 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition"
-            onClick={toggleTheme}
-            aria-label="Switch Theme"
-            type="button"
-          >
-            {theme === "light" ? (
-              <Moon size={18} />
-            ) : (
-              <Sun size={18} />
-            )}
-            <span>{theme === "light" ? "Dark" : "Light"} Mode</span>
-          </button>
-          <button
-            className="flex items-center gap-2 px-2 py-2 rounded-md text-destructive hover:underline transition"
-            onClick={logout}
-            type="button"
-          >
-            <LogOut size={18} />
-            <span>Logout</span>
-          </button>
-        </div>
-      </SidebarFooter>
+      <SidebarSeparator />
+      <div className="flex flex-col gap-3 px-2">
+        <button
+          className="flex items-center gap-2 px-2 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition"
+          onClick={toggleTheme}
+          aria-label="Switch Theme"
+          type="button"
+        >
+          {theme === "light" ? (
+            <Moon size={18} />
+          ) : (
+            <Sun size={18} />
+          )}
+          <span>{theme === "light" ? "Dark" : "Light"} Mode</span>
+        </button>
+        <button
+          className="flex items-center gap-2 px-2 py-2 rounded-md text-destructive hover:underline transition"
+          onClick={logout}
+          type="button"
+        >
+          <LogOut size={18} />
+          <span>Logout</span>
+        </button>
+      </div>
     </Sidebar>
   );
 }

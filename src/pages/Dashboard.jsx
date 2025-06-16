@@ -5,7 +5,7 @@ import { summaryStats, recentSales } from "../data/data";
 
 export default function Dashboard() {
   return (
-    <div className="bg-[#F4F7FB] min-h-screen pb-20 relative overflow-x-hidden">
+    <div className="min-h-screen pb-20 relative overflow-x-hidden bg-background">
       <div className="w-full mx-auto px-6 pt-10">
         <h1 className="text-3xl font-bold mb-7">Dashboard</h1>
 
@@ -28,7 +28,7 @@ export default function Dashboard() {
           <div className="lg:col-span-2">
           </div>
 
-          <div className="bg-card rounded-xl shadow-sm p-6 flex flex-col min-h-[312px]">
+          <div className="bg-card rounded-lg border shadow-sm p-6 flex flex-col min-h-[312px]">
             <div className="mb-4 font-semibold">Recent Sales</div>
             <div className="flex-1">
               <ul className="divide-y">
