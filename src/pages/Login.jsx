@@ -1,13 +1,15 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { useAuth } from "../hooks/useAuth";
-import { toast } from "../hooks/use-toast";
+import { useAuth } from "@/hooks/useAuth";
+import { toast } from "@/hooks/use-toast";
 import { Facebook, Globe } from "lucide-react";
 
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Moon, Sun } from "lucide-react";
+import { useTheme } from "@/hooks/useTheme";
 
 export default function Login() {
   const { login } = useAuth();
@@ -16,6 +18,11 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [agree, setAgree] = useState(true);
+  const [theme, setTheme] = useTheme();
+
+  const toggleTheme = () => {
+    setTheme(theme === 'dark' ? 'light' : 'dark');
+  };
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -35,16 +42,34 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen flex">
+    <div className={`min-h-screen flex relative ${theme === 'dark' ? 'dark bg-background' : 'bg-background'}`}>
+      {/* Theme Toggle Button - Bottom Left */}
+      <button
+        onClick={toggleTheme}
+        className="fixed bottom-4 left-4 p-3 rounded-full bg-primary text-primary-foreground shadow-lg hover:bg-primary/90 transition-colors z-50 flex items-center gap-2"
+        aria-label="Toggle theme"
+      >
+        {theme === 'dark' ? (
+          <>
+            <Sun className="w-5 h-5" />
+            <span>Light Mode</span>
+          </>
+        ) : (
+          <>
+            <Moon className="w-5 h-5" />
+            <span>Dark Mode</span>
+          </>
+        )}
+      </button>
       {/* Left - Form */}
-      <div className="flex flex-1 justify-center items-center bg-white">
+      <div className="flex flex-1 justify-center items-center bg-card">
         <form
           onSubmit={onSubmit}
-          className="w-full max-w-md mx-auto flex flex-col gap-6 px-6"
+          className="w-full max-w-md mx-auto flex flex-col gap-6 p-8 rounded-xl bg-card shadow-lg border border-border"
         >
-          <div className="mb-2">
-            <h2 className="text-4xl font-bold text-center mb-2">Welcome Back</h2>
-            <div className="text-lg text-center text-muted-foreground mb-4">Sign Up For Free</div>
+          <div className="mb-2 text-center">
+            <h2 className="text-4xl font-bold text-foreground mb-2">Welcome Back</h2>
+            <div className="text-lg text-muted-foreground">Login To Your Account</div>
           </div>
           <div className="flex flex-col gap-3">
             <div>
@@ -57,11 +82,11 @@ export default function Login() {
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="Email"
-                className="rounded-md bg-muted"
+                className="rounded-md bg-background"
               />
             </div>
             <div>
-              <Label htmlFor="password" className="mb-1 block">Password</Label>
+              <Label htmlFor="password" className="mb-1 block text-foreground">Password</Label>
               <Input
                 id="password"
                 required
@@ -69,8 +94,8 @@ export default function Login() {
                 autoComplete="current-password"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
-                placeholder="Password"
-                className="rounded-md bg-muted"
+                placeholder="••••••••"
+                className="rounded-md bg-background"
               />
             </div>
             <div className="flex items-center gap-2 mt-1">
@@ -89,10 +114,10 @@ export default function Login() {
           </div>
           <Button
             type="submit"
-            className="w-full rounded-full bg-[#884CFF] hover:bg-[#884CFF]/90 font-semibold text-base py-3 mt-2"
+            className="w-full rounded-full bg-primary hover:bg-primary/90 font-semibold text-base py-3 mt-2 text-primary-foreground"
             disabled={submitting}
           >
-            {submitting ? "Signing In..." : "Get Started"}
+            {submitting ? "Logging In..." : "Login"}
           </Button>
           <div className="flex items-center gap-2">
             <div className="flex-1 h-px bg-muted" />
@@ -120,12 +145,12 @@ export default function Login() {
             </Button>
           </div>
           <div className="text-sm text-center text-muted-foreground pt-2">
-            Already have an account?{" "}
+            Don't have an account?{" "}
             <span
-              className="text-[#884CFF] font-semibold cursor-pointer"
-              onClick={() => navigate("/login")}
+              className="text-primary font-semibold cursor-pointer hover:underline"
+              onClick={() => navigate("/register")}
             >
-              Login
+              Register
             </span>
           </div>
         </form>

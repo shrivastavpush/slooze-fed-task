@@ -104,7 +104,7 @@ export function AppSidebar() {
       </SidebarContent>
 
       <SidebarSeparator />
-      <div className="flex flex-col gap-3 px-2">
+      <div className="flex flex-col gap-3 p-2">
         <button
           className="flex items-center gap-2 px-2 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition"
           onClick={toggleTheme}

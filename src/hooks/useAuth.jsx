@@ -5,7 +5,7 @@ const AuthContext = createContext(undefined);
 
 const MOCK_USERS = [
   { email: "manager@slooze.com", password: "password", role: "manager" },
-  { email: "storekeeper@slooze.com", password: "password", role: "storekeeper" },
+  { email: "keeper@slooze.com", password: "password", role: "keeper" },
 ];
 
 export function AuthProvider({ children }) {
