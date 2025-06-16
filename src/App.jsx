@@ -29,17 +29,32 @@ function ThemeInitializer() {
   return null;
 }
 
-function ProtectedRoute({ children, role }) {
+function ProtectedRoute({ children, role, isPublic = false }) {
   const { user } = useAuth();
-  if (!user) return <Navigate to="/login" replace />;
+  
+  // If it's a public route, just render the children
+  if (isPublic) return <>{children}</>;
+  
+  // For protected routes, check authentication
+  if (!user) return <Navigate to="/login" replace state={{ from: window.location.pathname }} />;
+  
+  // Check role if specified
   if (role && user.role !== role) return <Navigate to="/products" replace />;
+  
   return <>{children}</>;
 }
 
 function AppRoutes() {
   return (
     <Routes>
-      <Route path="/login" element={<Login />} />
+      <Route 
+        path="/login" 
+        element={
+          <ProtectedRoute isPublic>
+            <Login />
+          </ProtectedRoute>
+        } 
+      />
       <Route
         path="/dashboard"
         element={
@@ -60,8 +75,24 @@ function AppRoutes() {
           </ProtectedRoute>
         }
       />
-      <Route path="/" element={<Index />} />
-      <Route path="*" element={<NotFound />} />
+      <Route 
+        path="/" 
+        element={
+          <ProtectedRoute isPublic>
+            <Index />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="*" 
+        element={
+          <ProtectedRoute>
+            <Layout>
+              <NotFound />
+            </Layout>
+          </ProtectedRoute>
+        } 
+      />
     </Routes>
   );
 }

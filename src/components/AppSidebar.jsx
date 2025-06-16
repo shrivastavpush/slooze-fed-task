@@ -10,7 +10,7 @@ const sidebarItems = [
     label: "Home",
     icon: Home,
     path: "/",
-    alwaysVisible: false,
+    alwaysVisible: true,
   },
   {
     label: "Dashboard",
@@ -64,9 +64,10 @@ export function AppSidebar() {
             <SidebarMenu>
               {sidebarItems.map((item) => {
                 const isDashboard = item.label === "Dashboard";
-                const isStorekeeper = user && user.role === "storekeeper";
-                const isActive = location.pathname.startsWith(item.path);
-                const disabled = isDashboard && isStorekeeper;
+                const isHome = item.label === "Home";
+                const isKeeper = user && user.role === "keeper";
+                const isActive = isHome ? location.pathname === "/" : location.pathname.startsWith(item.path);
+                const disabled = isDashboard && isKeeper;
 
                 return (
                   <SidebarMenuItem key={item.label}>
@@ -87,7 +88,7 @@ export function AppSidebar() {
                         </span>
                       ) : (
                         <Link
-                          to={item.path}
+                          to={isHome ? "/not-found" : item.path}
                           className="flex items-center gap-2 w-full"
                         >
                           <item.icon size={20} />
