@@ -4,6 +4,7 @@ import { useTheme } from "@/hooks/useTheme";
 import { useLocation, Link } from "react-router-dom";
 import { LayoutDashboard, List, LogOut, Sun, Moon, Settings, Home, ChartColumn, Wallet, BadgeInfo } from "lucide-react";
 import { cn } from "./../lib/utils";
+import TranslateDropdown from "./TranslateDropdown";
 
 const sidebarItems = [
   {
@@ -106,6 +107,9 @@ export function AppSidebar() {
 
       <SidebarSeparator />
       <div className="flex flex-col gap-3 p-2">
+
+        <TranslateDropdown />
+
         <button
           className="flex items-center gap-2 px-2 py-2 rounded-md text-muted-foreground hover:bg-muted hover:text-primary transition"
           onClick={toggleTheme}
