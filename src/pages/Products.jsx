@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "../hooks/use-toast";
-import { Table, TableHeader, TableBody, TableHead, TableRow, TableCell, } from "../components/ui/table";
 import { Button } from "../components/ui/button";
-import { Pagination, PaginationContent, PaginationItem, PaginationLink, } from "../components/ui/pagination";
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip as ChartTooltip, Legend } from 'chart.js';
-import { Download, Filter } from "lucide-react";
+import { ToggleLeft, ToggleRight, ChevronDown } from "lucide-react";
 import ProductModal from "../components/ProductModal";
+import ProductTable from "../components/ProductTable";
+import PaginationBar from "../components/Pagination";
+import CategoryTable from "../components/CategoryTable";
 
 // Register ChartJS components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, ChartTooltip, Legend);
@@ -82,9 +83,14 @@ export default function Products() {
   const [edit, setEdit] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [currentTab, setCurrentTab] = useState("published");
-  const [selected, setSelected] = useState([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [groupByCategory, setGroupByCategory] = useState(false);
+  const [expandedCategories, setExpandedCategories] = useState([]);
+
+  const perPage = 8;
+  const paginated = products.slice((page - 1) * perPage, page * perPage);
+  const pageCount = Math.ceil(products.length / perPage);
 
   // Fetch products from "API" (local storage) on mount
   useEffect(() => {
@@ -122,7 +128,6 @@ export default function Products() {
     setLoading(true);
     apiDeleteProduct(product.id).then(updated => {
       setProducts(updated);
-      setSelected(selected => selected.filter(id => id !== product.id));
       setLoading(false);
       toast({
         title: "Deleted",
@@ -131,20 +136,13 @@ export default function Products() {
     });
   };
 
-  const handleSelectAll = (checked) => {
-    if (checked) setSelected(products.map((p) => p.id));
-    else setSelected([]);
-  };
-  const handleSelectRow = (id, checked) => {
-    setSelected((sel) =>
-      checked ? [...sel, id] : sel.filter((val) => val !== id)
+  const handleExpand = (category) => {
+    setExpandedCategories((prev) =>
+      prev.includes(category)
+        ? prev.filter((cat) => cat !== category)
+        : [...prev, category]
     );
   };
-
-  // For demo, assume 8 items per page
-  const perPage = 8;
-  const paginated = products.slice((page - 1) * perPage, page * perPage);
-  const pageCount = Math.ceil(products.length / perPage);
 
   return (
     <div className="max-w-7xl mx-auto flex flex-col md:flex-row gap-8 md:gap-10 px-2 sm:px-4 pb-24">
@@ -185,107 +183,56 @@ export default function Products() {
             </button>
           </div>
           <div className="flex items-center gap-2 pr-3 pb-2 sm:pb-0 pt-1 sm:pt-0">
-            <Button variant="ghost" size="sm" className="gap-1">
-              <Filter size={16} /> Filter
-            </Button>
-            <Button variant="ghost" size="sm" className="gap-1">
-              <Download size={16} /> Download
+            <Button
+              variant="ghost"
+              size="sm"
+              className="gap-2 flex items-center justify-center"
+              onClick={() => setGroupByCategory(!groupByCategory)}
+            >
+              {groupByCategory ? <ToggleLeft size={16} /> : <ToggleRight size={16} className="text-red-500" />}
+              <span className="text-sm font-medium">
+                {groupByCategory ? "Show by Category" : "Show by Product"}
+              </span>
             </Button>
           </div>
         </div>
+
         {/* Table */}
+
         <div className="bg-card rounded-lg shadow border overflow-x-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-10 min-w-[40px]">
-                  <input
-                    type="checkbox"
-                    checked={selected.length > 0 && selected.length === paginated.length}
-                    onChange={e => handleSelectAll(e.target.checked)}
-                  />
-                </TableHead>
-                <TableHead>Product Name</TableHead>
-                <TableHead className="hidden sm:table-cell">Views</TableHead>
-                <TableHead>Pricing</TableHead>
-                <TableHead className="hidden md:table-cell">Revenue</TableHead>
-                <TableHead>Manage</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {loading ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    Loading...
-                  </TableCell>
-                </TableRow>
-              ) : paginated.length === 0 ? (
-                <TableRow>
-                  <TableCell colSpan={6} className="text-center text-muted-foreground py-8">
-                    No products found.
-                  </TableCell>
-                </TableRow>
-              ) : paginated.map((p) => (
-                <TableRow key={p.id} className="hover:bg-muted/40 transition cursor-pointer">
-                  <TableCell>
-                    <input
-                      type="checkbox"
-                      checked={selected.includes(p.id)}
-                      onChange={e => handleSelectRow(p.id, e.target.checked)}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-3">
-                      <img
-                        src={p.image}
-                        alt="Product"
-                        className="w-9 h-9 rounded object-cover bg-muted border"
-                      />
-                      <span className="truncate font-medium">{p.name}</span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="hidden sm:table-cell">{p.views.toLocaleString()}</TableCell>
-                  <TableCell>${p.price.toFixed(2)}</TableCell>
-                  <TableCell className="hidden md:table-cell">${p.revenue.toLocaleString()}</TableCell>
-                  <TableCell>
-                    <div className="flex gap-2 flex-wrap">
-                      <Button size="sm" variant="outline" onClick={() => handleEdit(p)}>
-                        Edit
-                      </Button>
-                      <Button size="sm" variant="outline" onClick={() => handleDelete(p)}>
-                        Delete
-                      </Button>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
+          {groupByCategory
+            ? (
+              <ProductTable
+                products={products}
+                loading={loading}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+                paginated={paginated}
+              />
+            ) : (
+              <CategoryTable
+                products={products}
+                loading={loading}
+                handleExpand={handleExpand}
+                expandedCategories={expandedCategories}
+                setExpandedCategories={setExpandedCategories}
+                handleEdit={handleEdit}
+                handleDelete={handleDelete}
+              />
+            )}
         </div>
-        {/* Pagination */}
-        <div className="py-6 flex flex-col sm:flex-row justify-between items-center gap-2">
-          <span className="text-muted-foreground text-sm">
-            Showing {(page - 1) * perPage + 1}-{Math.min(page * perPage, products.length)} of {products.length} products
-          </span>
-          <Pagination>
-            <PaginationContent>
-              {Array.from({ length: pageCount }, (_, idx) => (
-                <PaginationItem key={idx}>
-                  <PaginationLink
-                    isActive={page === idx + 1}
-                    href="#"
-                    onClick={e => {
-                      e.preventDefault();
-                      setPage(idx + 1);
-                    }}
-                  >
-                    {idx + 1}
-                  </PaginationLink>
-                </PaginationItem>
-              ))}
-            </PaginationContent>
-          </Pagination>
-        </div>
+
+        <PaginationBar
+          products={products}
+          loading={loading}
+          handleEdit={handleEdit}
+          handleDelete={handleDelete}
+          paginated={paginated}
+          page={page}
+          setPage={setPage}
+          perPage={perPage}
+          pageCount={pageCount}
+        />
       </div>
 
       {/* Modal for product add/edit */}
